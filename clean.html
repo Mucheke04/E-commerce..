@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GemWash Laundry Services</title>
+    <style>
+      :root {
+        --bg: #f4f8f2;
+        --bg-strong: #ebf5ea;
+        --surface: #ffffff;
+        --surface-soft: #f8faf8;
+        --text: #15241a;
+        --muted: #5d6d60;
+        --primary: #226b46;
+        --primary-dark: #174d34;
+        --accent: #f4c76b;
+        --accent-soft: #fff3d6;
+        --line: #dfe9df;
+        --shadow: 0 20px 50px rgba(20, 55, 35, 0.12);
+        --success: #3f9d5d;
+        --danger: #d85d5d;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(180deg, #f7faf6 0%, #edf5ee 100%);
+        color: var(--text);
+      }
+
+      a { text-decoration: none; color: inherit; }
+      img { max-width: 100%; display: block; }
+      button, input { font: inherit; }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(18px);
+        background: rgba(247, 250, 246, 0.8);
+        border-bottom: 1px solid rgba(34, 107, 70, 0.08);
+      }
+
+      .nav-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+        gap: 24px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), #6cbf8f);
+        display: grid;
+        place-items: center;
+        color: white;
+        font-size: 1.15rem;
+        box-shadow: 0 12px 30px rgba(34, 107, 70, 0.25);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .nav-links a:hover { color: var(--primary); }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .pill-btn,
+      .primary-btn,
+      .ghost-btn,
+      .filter-btn,
+      .minus-btn,
+      .plus-btn,
+      .submit-btn {
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .primary-btn,
+      .submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 22px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        font-weight: 700;
+        box-shadow: 0 12px 24px rgba(34, 107, 70, 0.18);
+      }
+
+      .ghost-btn {
+        padding: 12px 18px;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--primary-dark);
+        border: 1px solid rgba(34, 107, 70, 0.18);
+        font-weight: 700;
+      }
+
+      .pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 999px;
+        background: var(--surface-soft);
+        border: 1px solid var(--line);
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .badge-count {
+        display: inline-grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        font-size: 0.72rem;
+        line-height: 1;
+      }
+
+      .primary-btn:hover,
+      .ghost-btn:hover,
+      .pill-btn:hover,
+      .filter-btn:hover,
+      .submit-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .hero {
+        padding: 52px 0 28px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 48px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(34, 107, 70, 0.08);
+        color: var(--primary-dark);
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-size: clamp(2.8rem, 4vw, 5rem);
+        line-height: 1.05;
+        margin: 20px 0 16px;
+        letter-spacing: -0.05em;
+      }
+
+      .lead {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--muted);
+        max-width: 650px;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .micro-stats {
+        margin-top: 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+      }
+
+      .micro-stats strong {
+        font-size: 1.8rem;
+        display: block;
+      }
+
+      .micro-stats span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .hero-art {
+        position: relative;
+        min-height: 560px;
+      }
+
+      .floating-card {
+        position: absolute;
+        border-radius: 22px;
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(34, 107, 70, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .product-display {
+        position: absolute;
+        inset: 50px 30px 20px 70px;
+        border-radius: 28px;
+        background: linear-gradient(135deg, #eaf6ec 0%, #d9f1dc 100%);
+        overflow: hidden;
+        box-shadow: 0 50px 70px rgba(29, 71, 46, 0.15);
+      }
+
+      .display-blob {
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(34, 107, 70, 0.12);
+        right: -40px;
+        top: 50px;
+      }
+
+      .display-blob.bottom {
+        width: 360px;
+        height: 360px;
+        left: -120px;
+        bottom: -120px;
+        top: auto;
+      }
+
+      .product-box {
+        position: absolute;
+        left: 50%;
+        top: 56%;
+        transform: translate(-50%, -50%);
+        width: 330px;
+        height: 360px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(241,249,244,0.9));
+        border: 1px solid rgba(34, 107, 70, 0.06);
+        box-shadow: 0 28px 50px rgba(48, 91, 61, 0.18);
+      }
+
+      .bottle {
+        position: absolute;
+        left: 50%;
+        top: 38%;
+        transform: translate(-50%, -50%);
+        width: 126px;
+        height: 182px;
+        background: linear-gradient(180deg, #d0e7d1 0%, #93c9a7 30%, #4e9a67 100%);
+        border-radius: 28px 28px 30px 30px;
+        border: 6px solid rgba(255,255,255,0.7);
+        box-shadow: inset 0 0 28px rgba(255,255,255,0.25);
+      }
+
+      .bottle:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -24px;
+        width: 52px;
+        height: 34px;
+        border-radius: 14px 14px 8px 8px;
+        background: linear-gradient(180deg, #f5f7f4, #d5e7d8);
+      }
+
+      .bottle:after {
+        content: "";
+        position: absolute;
+        inset: 28px 18px 18px 18px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.12);
+      }
+
+      .mini-tag {
+        position: absolute;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.8);
+        border: 1px solid rgba(34, 107, 70, 0.12);
+        box-shadow: 0 18px 30px rgba(32, 61, 44, 0.08);
+      }
+
+      .mini-tag.one {
+        left: 26px;
+        top: 18px;
+      }
+
+      .mini-tag.two {
+        right: 24px;
+        bottom: 22px;
+      }
+
+      .mini-tag strong {
+        display: block;
+        font-size: 1rem;
+      }
+
+      .mini-tag span {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .rating-bubble {
+        position: absolute;
+        right: 28px;
+        top: 118px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 18px 18px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.88);
+        box-shadow: var(--shadow);
+      }
+
+      .stars {
+        color: #f5b847;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+      }
+
+      .rating-bubble strong {
+        display: block;
+        font-size: 1.2rem;
+      }
+
+      .intro-strip {
+        padding: 18px 0 8px;
+      }
+
+      .strip-box {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        background: rgba(255,255,255,0.8);
+        border: 1px solid rgba(34, 107, 70, 0.06);
+        border-radius: 22px;
+        box-shadow: 0 10px 28px rgba(17, 65, 38, 0.06);
+      }
+
+      .strip-item {
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .strip-item:first-child { border-radius: 21px 0 0 21px; }
+      .strip-item:last-child { border-radius: 0 21px 21px 0; }
+
+      .icon-bullet {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: rgba(34, 107, 70, 0.08);
+        color: var(--primary);
+        font-size: 1.05rem;
+      }
+
+      .section {
+        padding: 44px 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 24px;
+      }
+
+      .section-head h2 {
+        margin: 8px 0 0;
+        font-size: clamp(2rem, 2vw, 3rem);
+        letter-spacing: -0.04em;
+      }
+
+      .section-head p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        max-width: 540px;
+        line-height: 1.6;
+      }
+
+      .catalog-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-bottom: 24px;
+      }
+
+      .filter-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .filter-btn {
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: transparent;
+        border: 1px solid rgba(34, 107, 70, 0.16);
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .filter-btn.active {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 10px 24px rgba(34, 107, 70, 0.18);
+      }
+
+      .search-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 250px;
+        padding: 12px 14px;
+        background: rgba(255,255,255,0.75);
+        border: 1px solid rgba(34, 107, 70, 0.1);
+        border-radius: 14px;
+      }
+
+      .search-box input {
+        border: none;
+        background: transparent;
+        width: 100%;
+        font-size: 0.98rem;
+        outline: none;
+      }
+
+      .catalog-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .product-card {
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(34, 107, 70, 0.08);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 16px 36px rgba(27, 69, 42, 0.06);
+      }
+
+      .product-media {
+        position: relative;
+        height: 220px;
+        background: linear-gradient(180deg, #eefaf0 0%, #e2f3e5 100%);
+        display: grid;
+        place-items: center;
+      }
+
+      .product-media .product-visual {
+        width: 120px;
+        height: 150px;
+        background: linear-gradient(180deg, #d8eadc, #7fc495);
+        border-radius: 30px;
+        position: relative;
+        box-shadow: inset 0 0 20px rgba(255,255,255,0.22), 0 16px 30px rgba(39, 90, 56, 0.12);
+      }
+
+      .product-visual:before {
+        content: "";
+        position: absolute;
+        top: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 54px;
+        height: 28px;
+        background: #ecf0eb;
+        border-radius: 12px 12px 8px 8px;
+      }
+
+      .tag {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: rgba(255,255,255,0.9);
+        color: var(--primary-dark);
+        border-radius: 999px;
+        padding: 8px 10px;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+
+      .product-body {
+        padding: 18px 18px 20px;
+      }
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .product-name {
+        margin: 0 0 10px;
+        font-size: 1.22rem;
+      }
+
+      .product-copy {
+        margin: 0 0 16px;
+        color: var(--muted);
+        line-height: 1.55;
+        min-height: 55px;
+      }
+
+      .product-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .price {
+        font-weight: 800;
+        font-size: 1.62rem;
+        letter-spacing: -0.04em;
+      }
+
+      .price small {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .add-cart {
+        padding: 11px 16px;
+        border-radius: 12px;
+        background: var(--bg-strong);
+        border: 1px solid rgba(34, 107, 70, 0.12);
+        color: var(--primary-dark);
+        font-weight: 800;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .feature-card {
+        background: rgba(255,255,255,0.8);
+        border: 1px solid rgba(34, 107, 70, 0.08);
+        border-radius: 22px;
+        padding: 24px;
+        box-shadow: 0 16px 36px rgba(27, 69, 42, 0.04);
+      }
+
+      .feature-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, rgba(34, 107, 70, 0.1), rgba(34, 107, 70, 0.03));
+        color: var(--primary);
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+      }
+
+      .feature-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.26rem;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .value-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+
+      .value-card,
+      .value-panel,
+      .revenue-card,
+      .step-card,
+      .cta-box {
+        background: rgba(255,255,255,0.8);
+        border: 1px solid rgba(34, 107, 70, 0.08);
+        border-radius: 24px;
+        box-shadow: 0 16px 36px rgba(27, 69, 42, 0.035);
+      }
+
+      .value-card { padding: 28px; }
+
+      .flow-list {
+        list-style: none;
+        padding: 0;
+        margin: 24px 0 0;
+        display: grid;
+        gap: 16px;
+      }
+
+      .flow-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .flow-no {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(34,107,70,0.12), rgba(34,107,70,0.05));
+        color: var(--primary-dark);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+
+      .value-panel {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      .metric-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: var(--surface-soft);
+        border: 1px solid rgba(34, 107, 70, 0.08);
+      }
+
+      .metric-box strong {
+        font-size: 1.8rem;
+      }
+
+      .metric-box span {
+        color: var(--muted);
+      }
+
+      .revenue-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .revenue-card {
+        padding: 22px 20px;
+      }
+
+      .revenue-card .dash {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(244, 199, 107, 0.2);
+        color: #9a6313;
+        font-weight: 800;
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .revenue-card h3 {
+        margin: 16px 0 8px;
+        font-size: 1.3rem;
+      }
+
+      .revenue-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .step-card {
+        padding: 24px;
+      }
+
+      .step-no {
+        display: inline-grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        font-weight: 800;
+      }
+
+      .step-card h3 {
+        margin: 18px 0 8px;
+        font-size: 1.32rem;
+      }
+
+      .step-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .cta-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 28px 32px;
+        background: linear-gradient(135deg, rgba(253, 251, 240, 0.9), rgba(233, 248, 236, 0.9));
+        border: 1px solid rgba(34, 107, 70, 0.08);
+      }
+
+      .cta-box h2 {
+        margin: 0 0 8px;
+        font-size: clamp(1.8rem, 2vw, 2.6rem);
+      }
+
+      .cta-box p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .site-footer {
+        padding: 28px 0 52px;
+      }
+
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding-top: 18px;
+        border-top: 1px solid rgba(34, 107, 70, 0.08);
+        color: var(--muted);
+      }
+
+      .mini-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+
+      .cart-drawer {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: min(360px, calc(100% - 32px));
+        background: rgba(255,255,255,0.98);
+        border: 1px solid rgba(34, 107, 70, 0.08);
+        border-radius: 24px;
+        box-shadow: 0 22px 40px rgba(19, 51, 31, 0.14);
+        padding: 18px;
+        z-index: 50;
+      }
+
+      .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .cart-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .cart-item {
+        display: grid;
+        grid-template-columns: 60px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(34,107,70,0.08);
+      }
+
+      .cart-thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        background: linear-gradient(180deg, #dff1e3, #8dc99f);
+        position: relative;
+      }
+
+      .cart-thumb:before {
+        content: "";
+        position: absolute;
+        inset: 16px 18px 10px 18px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.2);
+      }
+
+      .cart-item h4 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .cart-item p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .qty-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .minus-btn,
+      .plus-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--bg-strong);
+        color: var(--primary-dark);
+        font-weight: 800;
+      }
+
+      .item-total {
+        font-weight: 800;
+      }
+
+      .checkout {
+        margin-top: 16px;
+      }
+
+      .checkout-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+
+      .empty-state {
+        color: var(--muted);
+        text-align: center;
+        padding: 14px 0 8px;
+      }
+
+      @media (max-width: 980px) {
+        .hero-inner,
+        .value-grid,
+        .catalog-grid,
+        .features-grid,
+        .revenue-grid,
+        .steps-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-art {
+          min-height: 460px;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .nav-links { display: none; }
+        .strip-box,
+        .catalog-grid,
+        .features-grid,
+        .revenue-grid,
+        .steps-grid,
+        .value-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .section-head,
+        .cta-box,
+        .footer-inner,
+        .catalog-controls {
+          display: block;
+        }
+
+        .nav-actions { gap: 8px; }
+        .cta-box { padding: 24px 20px; }
+        .hero { padding-top: 24px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="#top" class="brand" aria-label="GemWash Laundry Services home">
+          <span class="brand-mark">G</span>
+          <span>GemWash</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#shop">Shop</a>
+          <a href="#features">Why us</a>
+          <a href="#model">Business model</a>
+          <a href="#steps">How it works</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="ghost-btn" type="button">Sign in</button>
+          <button class="pill-btn" type="button" aria-label="Shopping cart">
+            Cart <span class="badge-count" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <span class="eyebrow">Laundry • Dry clean • Pickup</span>
+            <h1>Fresh clothes, stress-free living in Nairobi.</h1>
+            <p class="lead">
+              GemWash handles everyday laundry, delicate care, business uniforms, and regular accounts for busy homes and companies.
+              Clean results, reliable timing, and service that fits your routine.
+            </p>
+
+            <div class="cta-row">
+              <a class="primary-btn" href="#shop">Book a wash</a>
+              <a class="ghost-btn" href="#model">See value model</a>
+            </div>
+
+            <div class="micro-stats">
+              <div>
+                <strong>3,000+</strong>
+                <span>orders completed</span>
+              </div>
+              <div>
+                <strong>4.9/5</strong>
+                <span>client rating</span>
+              </div>
+              <div>
+                <strong>24h</strong>
+                <span>average turnaround</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-art" aria-label="Laundry service display">
+            <div class="floating-card rating-bubble">
+              <div>
+                <div class="stars">★★★★★</div>
+                <strong>4.9</strong>
+              </div>
+              <div>
+                <small style="color: var(--muted);">Verified service</small>
+              </div>
+            </div>
+
+            <div class="product-display">
+              <div class="display-blob"></div>
+              <div class="display-blob bottom"></div>
+
+              <div class="mini-tag one">
+                <strong>KSh 2,500</strong>
+                <span>Monthly plan</span>
+              </div>
+
+              <div class="product-box">
+                <div class="bottle"></div>
+              </div>
+
+              <div class="mini-tag two">
+                <strong>Wash & Fold</strong>
+                <span>Same-day option</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="intro-strip">
+        <div class="container strip-box">
+          <div class="strip-item"><span class="icon-bullet">✓</span>Free pickup above KSh 3,000</div>
+          <div class="strip-item"><span class="icon-bullet">⚡</span>Fast 24-hour service</div>
+          <div class="strip-item"><span class="icon-bullet">🔒</span>Secure M-Pesa checkout</div>
+          <div class="strip-item"><span class="icon-bullet">💧</span>Eco-safe detergents</div>
+        </div>
+      </section>
+
+      <section id="shop" class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Popular packages</span>
+              <h2>Choose your wash plan</h2>
+            </div>
+            <p>Whether you need regular family laundry, delicate care, or bulk commercial cleaning, GemWash offers clean, affordable solutions.</p>
+          </div>
+
+          <div class="catalog-controls">
+            <div class="filter-list" aria-label="Filter services">
+              <button class="filter-btn active" type="button" data-filter="all">All</button>
+              <button class="filter-btn" type="button" data-filter="daily">Daily care</button>
+              <button class="filter-btn" type="button" data-filter="premium">Premium</button>
+              <button class="filter-btn" type="button" data-filter="business">Business</button>
+            </div>
+
+            <label class="search-box" aria-label="Search services">
+              <span>🔎</span>
+              <input id="productSearch" type="search" placeholder="Search services" />
+            </label>
+          </div>
+
+          <div id="productGrid" class="catalog-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Why clients choose us</span>
+              <h2>Convenience, quality, and trust</h2>
+            </div>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-icon">🚐</div>
+              <h3>Pickup on demand</h3>
+              <p>Schedule collection from your home, office, or apartment without leaving your routine.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">📱</div>
+              <h3>Live order updates</h3>
+              <p>Track your order from pickup to delivery with digital confirmations and quick updates.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">🧼</div>
+              <h3>Fabric-safe care</h3>
+              <p>Our team treats every fabric with temperature, detergent, and drying methods suited to the material.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">💬</div>
+              <h3>Account support</h3>
+              <p>Weekly billing, balance follow-up, and reliable customer communication support repeat business and account health.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="model" class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Value creation model</span>
+              <h2>How the laundry business creates value</h2>
+            </div>
+          </div>
+
+          <div class="value-grid">
+            <article class="value-card">
+              <h3 style="margin: 0; font-size: 1.8rem; letter-spacing: -0.03em;">The value is in solving a daily pain point with reliability.</h3>
+              <ul class="flow-list">
+                <li>
+                  <span class="flow-no">1</span>
+                  <div>
+                    <strong>Convenience-first service</strong><br />
+                    Customers want fresh clothes without long waits, handwashing, or trips to a laundromat.
+                  </div>
+                </li>
+                <li>
+                  <span class="flow-no">2</span>
+                  <div>
+                    <strong>Strong conversion</strong><br />
+                    Clear package pricing, express options, and shiny online booking help customers decide quickly.
+                  </div>
+                </li>
+                <li>
+                  <span class="flow-no">3</span>
+                  <div>
+                    <strong>Recurring income</strong><br />
+                    Monthly plans, corporate accounts, and balance reminders create stable revenue and healthier account performance.
+                  </div>
+                </li>
+              </ul>
+            </article>
+
+            <aside class="value-panel">
+              <div class="metric-box">
+                <div>
+                  <span>Monthly revenue</span>
+                  <br />
+                  <strong>KSh 1.8M</strong>
+                </div>
+                <div style="font-size: 1.4rem; color: var(--success);">▲ 32%</div>
+              </div>
+              <div class="metric-box">
+                <div>
+                  <span>Repeat clients</span>
+                  <br />
+                  <strong>68%</strong>
+                </div>
+                <div style="font-size: 1.4rem; color: var(--success);">▲ 21%</div>
+              </div>
+              <div class="metric-box">
+                <div>
+                  <span>Average order</span>
+                  <br />
+                  <strong>KSh 2,950</strong>
+                </div>
+                <div style="font-size: 1.4rem; color: var(--success);">▲ 18%</div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Revenue streams</span>
+              <h2>How GemWash makes money</h2>
+            </div>
+          </div>
+
+          <div class="revenue-grid">
+            <article class="revenue-card">
+              <span class="dash">Core</span>
+              <h3>Wash & fold</h3>
+              <p>Regular laundry pricing creates steady demand from families, students, and busy professionals.</p>
+            </article>
+            <article class="revenue-card">
+              <span class="dash">Recurring</span>
+              <h3>Monthly accounts</h3>
+              <p>Weekly and monthly service plans keep sales predictable and improve customer retention.</p>
+            </article>
+            <article class="revenue-card">
+              <span class="dash">Add-on</span>
+              <h3>Ironing & express</h3>
+              <p>Premium services such as express cleaning and ironing increase average order values and margins.</p>
+            </article>
+            <article class="revenue-card">
+              <span class="dash">B2B</span>
+              <h3>Corporate linen</h3>
+              <p>Hotels, hostels, uniforms, and office laundry create larger recurring accounts and stable cash flow.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="steps" class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Customer journey</span>
+              <h2>From booking to delivery</h2>
+            </div>
+          </div>
+
+          <div class="steps-grid">
+            <article class="step-card">
+              <div class="step-no">1</div>
+              <h3>Select a plan</h3>
+              <p>Choose a wash package, add services, and schedule pickup based on your location and timing.</p>
+            </article>
+            <article class="step-card">
+              <div class="step-no">2</div>
+              <h3>We clean</h3>
+              <p>Items are washed, dried, folded, ironed, or dry-cleaned according to care instructions and quality checks.</p>
+            </article>
+            <article class="step-card">
+              <div class="step-no">3</div>
+              <h3>Delivered fresh</h3>
+              <p>Customers receive clean clothes on time, with easy repeat orders for weekly or monthly service.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="cta-box">
+            <div>
+              <h2>Fresh laundry, no hassle.</h2>
+              <p>Book dependable laundry services in Kenya with pricing designed for homes, renters, and business accounts.</p>
+            </div>
+            <a href="#shop" class="primary-btn">Book now</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="brand" aria-label="GemWash Laundry Services">
+          <span class="brand-mark">G</span>
+          <span>GemWash</span>
+        </div>
+        <div class="mini-nav">
+          <a href="#shop">Services</a>
+          <a href="#features">Why us</a>
+          <a href="#model">Business model</a>
+        </div>
+        <div>© 2026 GemWash Laundry Services. Clean living, made easy.</div>
+      </div>
+    </footer>
+
+    <aside class="cart-drawer" aria-live="polite">
+      <div class="cart-header">
+        <h3 style="margin: 0; font-size: 1.25rem;">Your cart</h3>
+        <span class="badge-count" id="cartBadge">0</span>
+      </div>
+      <div id="cartList" class="cart-list"></div>
+      <div class="checkout">
+        <div class="checkout-row">
+          <span>Total</span>
+          <strong id="cartTotal">KSh 0</strong>
+        </div>
+        <button class="submit-btn" type="button">Checkout</button>
+      </div>
+    </aside>
+
+    <script>
+      const products = [
+        { id: 1, name: 'Wash & Fold Small', price: 1200, category: 'daily', tag: 'Popular', rating: 4.9 },
+        { id: 2, name: 'Wash & Fold Family', price: 1800, category: 'daily', tag: 'Best seller', rating: 4.9 },
+        { id: 3, name: 'Delicate Dry Clean', price: 2800, category: 'premium', tag: 'Care', rating: 4.8 },
+        { id: 4, name: 'Bedding & Linen Care', price: 2200, category: 'premium', tag: 'Home', rating: 4.9 },
+        { id: 5, name: 'Express Laundry', price: 3200, category: 'premium', tag: 'Same-day', rating: 4.8 },
+        { id: 6, name: 'Office Uniform Pack', price: 3600, category: 'business', tag: 'Business', rating: 4.9 },
+        { id: 7, name: 'Hotel Linen Service', price: 5400, category: 'business', tag: 'Bulk', rating: 4.9 },
+        { id: 8, name: 'Weekly Family Account', price: 2500, category: 'daily', tag: 'Plan', rating: 4.8 }
+      ];
+
+      const state = {
+        filter: 'all',
+        query: '',
+        cart: []
+      };
+
+      const productGrid = document.getElementById('productGrid');
+      const cartList = document.getElementById('cartList');
+      const cartCount = document.getElementById('cartCount');
+      const cartBadge = document.getElementById('cartBadge');
+      const cartTotal = document.getElementById('cartTotal');
+
+      function formatMoney(value) {
+        return new Intl.NumberFormat('en-KE', {
+          style: 'currency',
+          currency: 'KES',
+          maximumFractionDigits: 0
+        }).format(value);
+      }
+
+      function getFilteredProducts() {
+        return products.filter((product) => {
+          const matchesFilter = state.filter === 'all' || product.category === state.filter;
+          const matchesSearch = product.name.toLowerCase().includes(state.query.toLowerCase());
+          return matchesFilter && matchesSearch;
+        });
+      }
+
+      function renderProducts() {
+        const filtered = getFilteredProducts();
+
+        if (!filtered.length) {
+          productGrid.innerHTML = '<div class="empty-state" style="grid-column: 1 / -1; padding: 30px; background: rgba(255,255,255,0.7); border-radius: 20px; border: 1px dashed rgba(34,107,70,0.2);">No service matches your search. Try another keyword.</div>';
+          return;
+        }
+
+        productGrid.innerHTML = filtered.map((product) => `
+          <article class="product-card" data-id="${product.id}">
+            <div class="product-media">
+              <span class="tag">${product.tag}</span>
+              <div class="product-visual"></div>
+            </div>
+            <div class="product-body">
+              <div class="meta-row">
+                <span>★ ${product.rating}</span>
+                <span>${product.category}</span>
+              </div>
+              <h3 class="product-name">${product.name}</h3>
+              <p class="product-copy">Professional laundry care with dependable turnaround, gentle treatment, and easy repeat ordering.</p>
+              <div class="product-footer">
+                <div class="price">${formatMoney(product.price)}<small>/service</small></div>
+                <button class="add-cart" type="button" data-add-id="${product.id}">Add</button>
+              </div>
+            </div>
+          </article>
+        `).join('');
+      }
+
+      function renderCart() {
+        const totalItems = state.cart.reduce((sum, item) => sum + item.qty, 0);
+        const totalValue = state.cart.reduce((sum, item) => sum + item.qty * item.price, 0);
+
+        cartCount.textContent = totalItems;
+        cartBadge.textContent = totalItems;
+        cartTotal.textContent = formatMoney(totalValue);
+
+        if (!state.cart.length) {
+          cartList.innerHTML = '<div class="empty-state">Your cart is empty. Add a laundry plan to get started.</div>';
+          return;
+        }
+
+        cartList.innerHTML = state.cart.map((item) => `
+          <div class="cart-item">
+            <div class="cart-thumb"></div>
+            <div>
+              <h4>${item.name}</h4>
+              <p>${formatMoney(item.price)} each</p>
+              <div class="qty-control">
+                <button class="minus-btn" data-decrease-id="${item.id}" type="button">−</button>
+                <span>${item.qty}</span>
+                <button class="plus-btn" data-increase-id="${item.id}" type="button">+</button>
+              </div>
+            </div>
+            <div class="item-total">${formatMoney(item.price * item.qty)}</div>
+          </div>
+        `).join('');
+      }
+
+      function addToCart(id) {
+        const product = products.find((item) => item.id === id);
+        if (!product) return;
+
+        const existing = state.cart.find((item) => item.id === id);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          state.cart.push({ ...product, qty: 1 });
+        }
+
+        renderCart();
+      }
+
+      function updateCartQuantity(id, change) {
+        const item = state.cart.find((entry) => entry.id === id);
+        if (!item) return;
+
+        item.qty += change;
+        if (item.qty <= 0) {
+          state.cart = state.cart.filter((entry) => entry.id !== id);
+        }
+
+        renderCart();
+      }
+
+      document.querySelectorAll('.filter-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach((btn) => btn.classList.remove('active'));
+          button.classList.add('active');
+          state.filter = button.dataset.filter;
+          renderProducts();
+        });
+      });
+
+      document.getElementById('productSearch').addEventListener('input', (event) => {
+        state.query = event.target.value.trim();
+        renderProducts();
+      });
+
+      productGrid.addEventListener('click', (event) => {
+        const target = event.target.closest('[data-add-id]');
+        if (!target) return;
+        addToCart(Number(target.dataset.addId));
+      });
+
+      cartList.addEventListener('click', (event) => {
+        const increaseBtn = event.target.closest('[data-increase-id]');
+        const decreaseBtn = event.target.closest('[data-decrease-id]');
+
+        if (increaseBtn) {
+          updateCartQuantity(Number(increaseBtn.dataset.increaseId), 1);
+        }
+
+        if (decreaseBtn) {
+          updateCartQuantity(Number(decreaseBtn.dataset.decreaseId), -1);
+        }
+      });
+
+      renderProducts();
+      renderCart();
+    </script>
+  </body>
+</html>
